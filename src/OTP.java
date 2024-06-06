@@ -27,11 +27,11 @@ public class OTP {
         //Calculation of OTP
         byte[] otpData = ByteBuffer.allocate(Long.BYTES).putLong(getSysTime()).array();
         byte[] encrypted = aes.doFinal(otpData);
-        String otp = Base64.getEncoder().encodeToString(encrypted).substring(0, OTPLength);
 
         //Print out OTP
-        String otphex = bytesToHex(encrypted).substring(0, OTPLength);
-        String otpBase64 = Base64.getEncoder().encodeToString(encrypted).substring(0, OTPLength);
+//        String otphex = bytesToHex(encrypted).substring(0, OTPLength);
+//        String otpBase64 = Base64.getEncoder().encodeToString(encrypted).substring(0, OTPLength);
+        String otp = Base64.getEncoder().encodeToString(encrypted).substring(0, OTPLength);
         return otp;
 
     }
