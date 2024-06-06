@@ -1,8 +1,13 @@
 public class Generator extends Thread{
     private volatile boolean run = true;
+    private int uid;
+    private int otpLength;
     private int interval;
-    private OTP otp = new OTP();
-    public Generator(int interval) {
+    private OTP otp;
+    public Generator(int uid, int otpLength, int interval) {
+        otp  = new OTP();
+        this.uid = uid;
+        this.otpLength = otpLength;
         this.interval = interval;
         run = true;
     }
@@ -12,11 +17,12 @@ public class Generator extends Thread{
      */
     public void run(){
         while(run){
-            String otp = this.otp.generateOTP(16);
+            String otp = this.otp.generateOTP(this.uid, this.otpLength, this.interval);
             if(otp == null){
                 System.out.println("Error.");
             }
             System.out.println(otp);
+            Verification.verifyOTP(otp);
             try {
                 Thread.sleep(1000 * interval);
             } catch (InterruptedException e) {

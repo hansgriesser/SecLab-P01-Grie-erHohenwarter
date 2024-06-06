@@ -7,8 +7,10 @@ import java.util.Arrays;
 
 public class main {
     public static void main(String[] args) throws NoSuchPaddingException, NoSuchAlgorithmException, InvalidKeyException, IllegalBlockSizeException, BadPaddingException {
-        int interval = 1;
-        Generator countDown = new Generator(interval);
+        int uid = 22;
+        int otpLegth = 16;
+        int interval = 10;
+        Generator countDown = new Generator(uid, otpLegth, interval);
         countDown.run();
 
         if(countDown != null){

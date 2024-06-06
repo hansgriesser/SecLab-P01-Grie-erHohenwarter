@@ -2,7 +2,7 @@ import lombok.SneakyThrows;
 
 import javax.crypto.Cipher;
 import javax.crypto.spec.SecretKeySpec;
-import java.nio.ByteBuffer;
+import java.nio.charset.StandardCharsets;
 import java.security.SecureRandom;
 import java.util.Base64;
 
@@ -22,25 +22,26 @@ public class OTP {
      * @return The password as String.
      */
     @SneakyThrows
-    public String generateOTP(int OTPLength){
+    public String generateOTP(int uid, int OTPLength, int valPer){
+        long sysTime = getSysTime();
+
         //Create random generated key
         byte[] key = new byte[16];
         SecureRandom random = new SecureRandom();
         random.nextBytes(key);
+
+        String dataToEncrypt = String.valueOf(uid + OTPLength + valPer + sysTime);
+        byte[] dataToEncryptBytes = padData(dataToEncrypt.getBytes(StandardCharsets.UTF_8), 16);
 
         //Generate AES with random generated kes from above
         Cipher aes = Cipher.getInstance("AES/ECB/PKCS5Padding");
         SecretKeySpec aesKey = new SecretKeySpec(key, "AES");
         aes.init(Cipher.ENCRYPT_MODE, aesKey);
 
-        //Calculation of OTP
-        byte[] otpData = ByteBuffer.allocate(Long.BYTES).putLong(getSysTime()).array();
-        byte[] encrypted = aes.doFinal(otpData);
+        byte[] encrypted = aes.doFinal(dataToEncryptBytes);
 
-        //Print out OTP
-//        String otphex = bytesToHex(encrypted).substring(0, OTPLength);
-//        String otpBase64 = Base64.getEncoder().encodeToString(encrypted).substring(0, OTPLength);
-        String otp = Base64.getEncoder().encodeToString(encrypted).substring(0, OTPLength);
+        String fk = Base64.getEncoder().encodeToString(encrypted).substring(0, OTPLength);
+        String otp = "" + uid + "" + OTPLength + "" + valPer + "" + fk;
         return otp;
 
     }
@@ -58,6 +59,11 @@ public class OTP {
         return sb.toString();
     }
 
-
+    // Methode zum Padding der Daten
+    public static byte[] padData(byte[] data, int blockSize) {
+        int paddingLength = blockSize - (data.length % blockSize);
+        byte[] paddedData = new byte[data.length + paddingLength];
+        System.arraycopy(data, 0, paddedData, 0, data.length);
+        return paddedData;
+    }
 }
-
