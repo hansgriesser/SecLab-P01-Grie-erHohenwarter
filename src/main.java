@@ -7,6 +7,8 @@ public class main {
         int V = 30; // Gültigkeitsdauer (in Sekunden)
         long T = System.currentTimeMillis() / 1000;
 
-        System.out.println(OTPGenerator.generateOTPUsingHash(KEY,UID,L,V,T));
+        Generator g = new Generator(UID,L,10);
+        g.start();
+
     }
 }

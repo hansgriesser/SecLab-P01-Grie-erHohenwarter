@@ -4,7 +4,7 @@ import java.nio.ByteBuffer;
 import java.security.MessageDigest;
 import java.util.Arrays;
 
-public class OTPGenerator extends Thread {
+public class OTP {
 
     private boolean run = true;
     private int interval;
@@ -19,7 +19,7 @@ public class OTPGenerator extends Thread {
 
     public static void main(String[] args) throws Exception {
         // OTP mit AES basierter Funktion
-        String otpAES = generateOTPUsingAES(KEY, UID, L, V, T);
+        String otpAES = generateOTPUsingAES(UID, L, V, T);
         System.out.println("OTP (AES): " + otpAES);
 
         // OTP mit Hash basierter Funktion
@@ -27,7 +27,7 @@ public class OTPGenerator extends Thread {
         System.out.println("OTP (Hash): " + otpHash);
     }
 
-    public static String generateOTPUsingAES(byte[] key, int uid, int l, int v, long t) throws Exception {
+    public static String generateOTPUsingAES(int uid, int l, int v, long t) throws Exception {
         // Kombiniere die Parameter in eine Byte-Puffer
         ByteBuffer buffer = ByteBuffer.allocate(4 + 4 + 4 + 8);
         buffer.putInt(uid);
@@ -40,7 +40,7 @@ public class OTPGenerator extends Thread {
 
         // AES Initialisierung
         Cipher aes = Cipher.getInstance("AES/ECB/NoPadding");
-        SecretKeySpec aesKey = new SecretKeySpec(key, "AES");
+        SecretKeySpec aesKey = new SecretKeySpec(KEY, "AES");
         aes.init(Cipher.ENCRYPT_MODE, aesKey);
 
         // Verschlüsselung und Auswahl der rechten L Bytes
