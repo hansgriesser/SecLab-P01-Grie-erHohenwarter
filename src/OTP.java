@@ -9,14 +9,6 @@ import java.util.Base64;
 public class OTP {
 
     /**
-     * Returns system time when the OTP is being generated.
-     * @return long
-     */
-    private long getSysTime(){
-        return System.currentTimeMillis() / 1000;
-    }
-
-    /**
      * Generates one time password. Takes the length of the OTP as parameter.
      * @param OTPLength integer
      * @return The password as String.
@@ -47,7 +39,7 @@ public class OTP {
         byte[] encrypted = aes.doFinal(dataToEncryptBytes);
 
         String fk = Base64.getEncoder().encodeToString(encrypted).substring(0, OTPLength);
-        String otp = "" + uid + "" + OTPLength + "" + valPer + "" + fk;
+        String otp = "" + String.format("%02d", uid) + "" + String.format("%02d", OTPLength) + "" + String.format("%02d", valPer) + "" + fk;
         return otp;
 
     }
