@@ -26,9 +26,16 @@ public class OTP {
         long sysTime = getSysTime();
 
         //Create random generated key
-        byte[] key = new byte[16];
-        SecureRandom random = new SecureRandom();
-        random.nextBytes(key);
+//        byte[] key = new byte[16];
+//        SecureRandom random = new SecureRandom();
+//        random.nextBytes(key);
+        byte[] key = new byte[] {
+                (byte) 0x01, (byte) 0x23, (byte) 0x45, (byte) 0x67,
+                (byte) 0x89, (byte) 0xAB, (byte) 0xCD, (byte) 0xEF,
+                (byte) 0x10, (byte) 0x32, (byte) 0x54, (byte) 0x76,
+                (byte) 0x98, (byte) 0xBA, (byte) 0xDC, (byte) 0xFE
+        };
+
 
         String dataToEncrypt = String.valueOf(uid + OTPLength + valPer + sysTime);
         byte[] dataToEncryptBytes = padData(dataToEncrypt.getBytes(StandardCharsets.UTF_8), 16);
