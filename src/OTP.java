@@ -22,8 +22,7 @@ public class OTP {
      * @return The password as String.
      */
     @SneakyThrows
-    public String generateOTP(int uid, int OTPLength, int valPer){
-        long sysTime = getSysTime();
+    public String generateOTP(int uid, int OTPLength, int valPer, long sysTime){
 
         //Create random generated key
 //        byte[] key = new byte[16];

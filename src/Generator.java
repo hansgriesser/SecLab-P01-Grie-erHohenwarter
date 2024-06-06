@@ -3,12 +3,14 @@ public class Generator extends Thread{
     private int uid;
     private int otpLength;
     private int interval;
+    private long sysTime;
     private OTP otp;
     public Generator(int uid, int otpLength, int interval) {
         otp  = new OTP();
         this.uid = uid;
         this.otpLength = otpLength;
         this.interval = interval;
+        this.sysTime = System.currentTimeMillis();
         run = true;
     }
 
@@ -17,12 +19,12 @@ public class Generator extends Thread{
      */
     public void run(){
         while(run){
-            String otp = this.otp.generateOTP(this.uid, this.otpLength, this.interval);
+            String otp = this.otp.generateOTP(this.uid, this.otpLength, this.interval, this.sysTime);
             if(otp == null){
                 System.out.println("Error.");
             }
             System.out.println(otp);
-            Verification.verifyOTP(otp);
+            Verification.verifyOTP(otp, this.sysTime);
             try {
                 Thread.sleep(1000 * interval);
             } catch (InterruptedException e) {
