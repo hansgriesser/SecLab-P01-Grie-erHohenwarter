@@ -1,12 +1,13 @@
 import javax.crypto.Cipher;
 import javax.crypto.spec.SecretKeySpec;
 import java.nio.ByteBuffer;
-import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
 import java.util.Arrays;
 
-public class OTP {
+public class OTPGenerator extends Thread {
+
+    private boolean run = true;
+    private int interval;
 
     // Beispielwerte für die Parameter
     private static final byte[] KEY = new byte[]{0x00, 0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07,
