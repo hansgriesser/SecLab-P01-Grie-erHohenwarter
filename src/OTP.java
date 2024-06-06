@@ -1,56 +1,49 @@
-import lombok.Getter;
+import lombok.SneakyThrows;
 
-import javax.crypto.BadPaddingException;
 import javax.crypto.Cipher;
-import javax.crypto.IllegalBlockSizeException;
-import javax.crypto.NoSuchPaddingException;
 import javax.crypto.spec.SecretKeySpec;
-import java.security.InvalidKeyException;
-import java.security.NoSuchAlgorithmException;
+import java.nio.ByteBuffer;
+import java.security.SecureRandom;
+import java.util.Base64;
 
 public class OTP {
 
-    private Cipher aes;
-//    private byte[] key = new byte[4];
-    private byte[] encrypted;
-
-
-    public String run() throws NoSuchPaddingException, NoSuchAlgorithmException, InvalidKeyException, IllegalBlockSizeException, BadPaddingException {
-        byte uid = (byte) 22;
-        byte OTP = (byte) 16;
-        byte validPer = (byte) 30;
-
-        generateAES(uid, OTP, validPer, getSystemTime());
-
-        encrypt();
-        return "";
+    private long getSysTime(){
+        return System.currentTimeMillis() / 1000;
     }
 
-    private byte getSystemTime(){
-        long now = System.currentTimeMillis() / 100;
-        return (byte) now;
-    }
+    @SneakyThrows
+    public String generateOTP(int OTPLength){
+        //Create random generated key
+        byte[] key = new byte[16];
+        SecureRandom random = new SecureRandom();
+        random.nextBytes(key);
 
-    private byte[] generateAES(byte uid, byte OTPLength, byte validPer, byte timeNow) throws NoSuchPaddingException, NoSuchAlgorithmException, InvalidKeyException {
-        byte[] key = new byte[5];
+        //Generate AES with random generated kes from above
+        Cipher aes = Cipher.getInstance("AES/ECB/PKCS5Padding");
+        SecretKeySpec aesKey = new SecretKeySpec(key, "AES");
+        aes.init(Cipher.ENCRYPT_MODE, aesKey);
 
+        //Calculation of OTP
+        byte[] otpData = ByteBuffer.allocate(Long.BYTES).putLong(getSysTime()).array();
+        byte[] encrypted = aes.doFinal(otpData);
+        String otp = Base64.getEncoder().encodeToString(encrypted).substring(0, OTPLength);
 
-        key[0] = uid; // UID einfügen
-        key[1] = OTPLength; // OTP länge einfügen
-        key[2] = validPer; // Gültigkeitsdauer einfügen
-        key[3] = timeNow;
-
-
-        this.aes = Cipher.getInstance("");
-
-        SecretKeySpec aesKey = new SecretKeySpec(key, "");
-
-        this.aes.init(Cipher.ENCRYPT_MODE, aesKey);
-        return key;
-    }
-
-    private void encrypt() throws IllegalBlockSizeException, BadPaddingException {
-        this.encrypted = aes.doFinal();
+        //Print out OTP
+        String otphex = bytesToHex(encrypted).substring(0, OTPLength);
+        String otpBase64 = Base64.getEncoder().encodeToString(encrypted).substring(0, OTPLength);
+        return otp;
 
     }
+
+    private static String bytesToHex(byte[] bytes) {
+        StringBuilder sb = new StringBuilder();
+        for (byte b : bytes) {
+            sb.append(String.format("%02x", b));
+        }
+        return sb.toString();
+    }
+
+
 }
+

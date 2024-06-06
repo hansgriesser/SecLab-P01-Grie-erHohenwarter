@@ -7,15 +7,13 @@ import java.util.Arrays;
 
 public class main {
     public static void main(String[] args) throws NoSuchPaddingException, NoSuchAlgorithmException, InvalidKeyException, IllegalBlockSizeException, BadPaddingException {
-        int interval = 10;
-        Generator countdown;
-        countdown = new Generator(interval);
-        countdown.start();
-        System.out.println();
+        int interval = 1;
+        Generator countDown = new Generator(interval);
+        countDown.run();
 
-        if(countdown != null){
-            countdown.kill();
+        if(countDown != null){
+            countDown.kill();
+            countDown = null;
         }
-        countdown = null;
     }
 }
