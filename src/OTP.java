@@ -8,10 +8,19 @@ import java.util.Base64;
 
 public class OTP {
 
+    /**
+     * Returns system time when the OTP is being generated.
+     * @return long
+     */
     private long getSysTime(){
         return System.currentTimeMillis() / 1000;
     }
 
+    /**
+     * Generates one time password. Takes the length of the OTP as parameter.
+     * @param OTPLength integer
+     * @return The password as String.
+     */
     @SneakyThrows
     public String generateOTP(int OTPLength){
         //Create random generated key
@@ -36,6 +45,11 @@ public class OTP {
 
     }
 
+    /**
+     * Helper method needed to convert bytes to hex. Will be deleted till the end if not needed.
+     * @param bytes bytes
+     * @return String
+     */
     private static String bytesToHex(byte[] bytes) {
         StringBuilder sb = new StringBuilder();
         for (byte b : bytes) {

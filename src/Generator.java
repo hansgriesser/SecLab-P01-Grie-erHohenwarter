@@ -7,6 +7,9 @@ public class Generator extends Thread{
         run = true;
     }
 
+    /**
+     * Method starts the generation of an OTP and prints it out onto the console.
+     */
     public void run(){
         while(run){
             String otp = this.otp.generateOTP(16);
@@ -22,6 +25,9 @@ public class Generator extends Thread{
         }
     }
 
+    /**
+     * Method kills the OTP generator.
+     */
     public void kill(){
         run = false;
     }

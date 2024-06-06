@@ -13,7 +13,7 @@ public class main {
 
         if(countDown != null){
             countDown.kill();
-            countDown = null;
         }
+        countDown = null;
     }
 }
