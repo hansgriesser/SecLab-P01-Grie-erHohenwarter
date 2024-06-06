@@ -1,6 +1,9 @@
+import lombok.Getter;
+
+import javax.crypto.BadPaddingException;
 import javax.crypto.Cipher;
+import javax.crypto.IllegalBlockSizeException;
 import javax.crypto.NoSuchPaddingException;
-import javax.crypto.SecretKey;
 import javax.crypto.spec.SecretKeySpec;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
@@ -9,8 +12,11 @@ public class OTP {
 
     private long now;
     private Cipher aes;
+    @Getter
+    private byte[] encrypted;
+    private byte[] key = {};
 
-    public void run() throws NoSuchPaddingException, NoSuchAlgorithmException, InvalidKeyException {
+    public void run() throws NoSuchPaddingException, NoSuchAlgorithmException, InvalidKeyException, IllegalBlockSizeException, BadPaddingException {
         getSystemTime();
         generateAES();
         encrypt();
@@ -21,17 +27,17 @@ public class OTP {
     }
 
     private void generateAES() throws NoSuchPaddingException, NoSuchAlgorithmException, InvalidKeyException {
-        byte[] key = {};
 
         this.aes = Cipher.getInstance("");
 
-        SecretKeySpec aesKey = new SecretKeySpec(key, "");
+        SecretKeySpec aesKey = new SecretKeySpec(this.key, "");
 
         this.aes.init(Cipher.ENCRYPT_MODE, aesKey);
 
     }
 
-    private void encrypt(){
-        byte[] encrypted = aes.doFinal(otp_data);
+    private void encrypt() throws IllegalBlockSizeException, BadPaddingException {
+        this.encrypted = aes.doFinal();
+
     }
 }
