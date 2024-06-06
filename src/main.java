@@ -7,8 +7,15 @@ import java.util.Arrays;
 
 public class main {
     public static void main(String[] args) throws NoSuchPaddingException, NoSuchAlgorithmException, InvalidKeyException, IllegalBlockSizeException, BadPaddingException {
-        OTP oneTimePassword = new OTP();
-        oneTimePassword.run();
-        System.out.println(Arrays.toString(oneTimePassword.getEncrypted()));
+        int interval = 10;
+        Generator countdown;
+        countdown = new Generator(interval);
+        countdown.start();
+        System.out.println();
+
+        if(countdown != null){
+            countdown.kill();
+        }
+        countdown = null;
     }
 }

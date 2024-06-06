@@ -12,14 +12,14 @@ public class OTP {
 
     private long now;
     private Cipher aes;
-    @Getter
     private byte[] encrypted;
     private byte[] key = {};
 
-    public void run() throws NoSuchPaddingException, NoSuchAlgorithmException, InvalidKeyException, IllegalBlockSizeException, BadPaddingException {
+    public String run() throws NoSuchPaddingException, NoSuchAlgorithmException, InvalidKeyException, IllegalBlockSizeException, BadPaddingException {
         getSystemTime();
         generateAES();
         encrypt();
+        return "";
     }
 
     private void getSystemTime(){
